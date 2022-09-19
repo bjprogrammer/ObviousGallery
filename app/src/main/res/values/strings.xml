@@ -2,4 +2,5 @@
     <string name="app_name">Obvious</string>
     <string name="nothing_to_show">Nothing to Show</string>
     <string name="image_thumbnail">Image Thumbnail</string>
+    <string name="displaying_full_size_image">Displaying full size image</string>
 </resources>
