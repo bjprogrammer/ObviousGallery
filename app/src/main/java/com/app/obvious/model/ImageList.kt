@@ -7,19 +7,21 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import com.google.gson.annotations.SerializedName
 
-class Image internal constructor(src: Parcel) : BaseObservable(), Parcelable {
-    private var copyright: String?
-    private var date: String?
-    private var explanation: String?
-    private var hdurl: String?
-    private var url: String?
-    private var title: String?
+class Image internal constructor(src: Parcel?) : BaseObservable(), Parcelable {
+    private var copyright: String? = null
+    private var date: String? = null
+    private var explanation: String? = null
+    private var hdurl: String? = null
+    private var url: String? = null
+    private var title: String? = null
+
+    constructor(title: String?, url: String?):this(null)
 
     @SerializedName("service_version")
-    private var version: String?
+    private var version: String? = null
 
     @SerializedName("media_type")
-    private var type: String?
+    private var type: String? = null
 
     @Bindable
     fun getCopyright(): String? = copyright
@@ -101,7 +103,7 @@ class Image internal constructor(src: Parcel) : BaseObservable(), Parcelable {
     }
 
     init {
-        src.apply {
+        src?.apply {
             copyright = readString()
             type = readString()
             date = readString()

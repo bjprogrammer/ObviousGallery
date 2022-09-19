@@ -12,6 +12,6 @@ class GetImages @Inject constructor(
     ): MaybeUseCase<Void, List<Image>>(appExecutorsInterface = appExecutorsInterface) {
 
     override fun buildUseCaseSingle(params: Void?): Maybe<List<Image>> {
-        return imageDataSource.fetchData()
+        return imageDataSource.getAllImages()
     }
 }

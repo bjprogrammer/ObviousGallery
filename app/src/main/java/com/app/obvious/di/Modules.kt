@@ -1,5 +1,7 @@
 package com.app.obvious.di
 
+import com.app.obvious.ui.data.ImageDataSource
+import com.app.obvious.ui.data.ImageRepository
 import com.app.obvious.utils.AppExecutorImpl
 import com.app.obvious.utils.AppExecutorsInterface
 import com.google.gson.GsonBuilder
@@ -23,4 +25,11 @@ internal object GsonModule {
 abstract class SchedulerModule{
     @Binds
     abstract fun appExecutor(appExecutorImpl: AppExecutorImpl) : AppExecutorsInterface
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class DataSourceModule{
+    @Binds
+    abstract fun imageDataSource(imageRepository: ImageRepository) : ImageDataSource
 }
