@@ -1,6 +1,9 @@
 package com.app.obvious.di
 
+import com.app.obvious.utils.AppExecutorImpl
+import com.app.obvious.utils.AppExecutorsInterface
 import com.google.gson.GsonBuilder
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,4 +16,11 @@ internal object GsonModule {
     @Singleton
     @Provides
     fun provideGson() = GsonBuilder().create()
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class SchedulerModule{
+    @Binds
+    abstract fun appExecutor(appExecutorImpl: AppExecutorImpl) : AppExecutorsInterface
 }

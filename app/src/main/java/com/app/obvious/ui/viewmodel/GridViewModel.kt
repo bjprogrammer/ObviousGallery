@@ -7,8 +7,7 @@ import com.app.obvious.model.Image
 import com.app.obvious.ui.usecases.GetImages
 import com.app.obvious.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.observers.DisposableMaybeObserver
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,13 +16,18 @@ class GridViewModel @Inject constructor(private val getImages: GetImages):ViewMo
     fun getImages() = Transformations.map(liveData) { it }
 
     fun fetchImageList(){
-        getImages.invoke()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
-                liveData.value = Response.Success(it)
-            }, {
-                liveData.value = Response.Error(it.message?:"")
-            })
+        getImages.execute(
+            observer = object: DisposableMaybeObserver<List<Image>>(){
+                override fun onSuccess(t: List<Image>) {
+                    liveData.value = Response.Success(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    liveData.value = Response.Error(e.message?:"")
+                }
+
+                override fun onComplete() {}
+            }
+        )
     }
 }
