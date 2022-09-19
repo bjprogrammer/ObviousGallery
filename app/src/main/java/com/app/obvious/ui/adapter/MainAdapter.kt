@@ -6,14 +6,11 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import com.app.obvious.R
-import com.app.obvious.model.ImageList
+import com.app.obvious.model.Image
 import com.app.obvious.ui.viewholders.GridViewHolder
-import java.util.*
 
-class MainAdapter constructor(listener: OnPressListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val imageList: MutableList<ImageList.Image>
+class MainAdapter constructor(listener: OnPressListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val imageList: MutableList<Image>
     private val listener: OnPressListener
 
     interface OnPressListener {
@@ -44,12 +41,12 @@ class MainAdapter constructor(listener: OnPressListener) :
 
     override fun getItemCount() = imageList.size
 
-    private fun add(image: ImageList.Image) {
+    private fun add(image: Image) {
         imageList.add(image)
-        notifyItemInserted(imageList.size - 1)
+        notifyItemInserted(itemCount - 1)
     }
 
-    fun addAll(list: List<ImageList.Image>) {
+    fun addAll(list: List<Image>) {
         for (response in list) {
             add(response)
         }

@@ -1,6 +1,7 @@
 package com.app.obvious
 
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     }
 
     private fun setupViews() {
+        //Changing status bar color
+        window?.statusBarColor = Color.BLACK
+
         supportFragmentManager
             .beginTransaction()
             .add(R.id.content, GridFragment.newInstance())

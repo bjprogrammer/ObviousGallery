@@ -16,19 +16,18 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.app.obvious.databinding.FragmentRecyclerViewBinding
-import com.app.obvious.model.ImageList
+import com.app.obvious.model.Image
 import com.app.obvious.utils.Constants.GRID_SIZE
 import com.app.obvious.utils.Response
 import com.app.obvious.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 
 @AndroidEntryPoint
 class GridFragment : Fragment() {
     private lateinit var binding: FragmentRecyclerViewBinding
-    private lateinit var adapter: MainAdapter
+    private lateinit var mainAdapter: MainAdapter
     private val viewModel: GridViewModel by viewModels()
-    private var imageList: List<ImageList.Image>? = null
+    private var imageList: List<Image>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,9 +50,9 @@ class GridFragment : Fragment() {
         viewModel.getImages().observe(viewLifecycleOwner){
             binding.progressBar.visibility = View.GONE
             if(it is Response.Success){
-                if (it.data.getData()?.isEmpty()?.not() == true) {
-                    imageList = it.data.getData()
-                    adapter.addAll(it.data.getData()!!)
+                if (it.data.isEmpty().not()) {
+                    imageList = it.data
+                    mainAdapter.addAll(it.data)
 
                     binding.apply {
                         recyclerView.visibility = View.VISIBLE
@@ -70,17 +69,17 @@ class GridFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = MainAdapter(object : OnPressListener {
+        mainAdapter = MainAdapter(object : OnPressListener {
             override fun onClick(position: Int, imageView: ImageView) {
                 //Adding new fragment with shared element transition when a image is clicked
-                DetailFragment.newInstance(position, imageList).apply {
-                    parentFragmentManager
-                        .beginTransaction()
-                        .addSharedElement(imageView, ViewCompat.getTransitionName(imageView)!!)
-                        .addToBackStack(TAG)
-                        .replace(R.id.content, this@GridFragment)
-                        .commit()
-                }
+                val fragment = DetailFragment.newInstance(position, imageList)
+                parentFragmentManager
+                    .beginTransaction()
+                    .setReorderingAllowed(true)
+                    .addSharedElement(imageView, ViewCompat.getTransitionName(imageView)?:"")
+                    .addToBackStack(TAG)
+                    .replace(R.id.content, fragment)
+                    .commit()
             }
         })
 
@@ -88,7 +87,7 @@ class GridFragment : Fragment() {
             val gridLayoutManager = GridLayoutManager(context, GRID_SIZE)
             layoutManager = gridLayoutManager
             itemAnimator = DefaultItemAnimator()
-            adapter = adapter
+            adapter = mainAdapter
         }
     }
 

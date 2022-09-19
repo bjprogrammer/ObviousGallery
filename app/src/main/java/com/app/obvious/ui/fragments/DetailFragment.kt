@@ -1,16 +1,16 @@
 package com.app.obvious.ui.fragments
 
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.*
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.doOnPreDraw
 import androidx.databinding.DataBindingUtil
 import com.app.obvious.R
 import androidx.fragment.app.Fragment
 import com.app.obvious.databinding.FragmentDetailBinding
-import com.app.obvious.model.ImageList
+import com.app.obvious.model.Image
 import com.app.obvious.ui.adapter.ImageAdapter
 import com.app.obvious.utils.Constants.IMAGE_LIST
 import com.app.obvious.utils.Constants.POSITION
@@ -41,10 +41,6 @@ class DetailFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
-
-        //Changing status bar color
-        val window = activity?.window
-        window?.statusBarColor = Color.BLACK
         return binding.root
     }
 
@@ -53,16 +49,18 @@ class DetailFragment : Fragment() {
 
         //Setup viewpager
         arguments?.let {
-            val currentItem = it.getInt(POSITION)
-            val imageList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.getParcelableArrayList(IMAGE_LIST, ImageList.Image::class.java)
+            val imageList: Array<Image> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelableArray(IMAGE_LIST, Image::class.java)
             } else {
-                it.getParcelableArrayList(IMAGE_LIST)
-            }?: arrayListOf<ImageList.Image>()
+                it.getParcelableArray(IMAGE_LIST) as? Array<Image>
+            }?: emptyArray()
 
             binding.viewPager.apply {
-                this.adapter = ImageAdapter(imageList)
-                this.currentItem = currentItem
+                adapter = ImageAdapter(imageList)
+                setCurrentItem(it.getInt(POSITION), false)
+                (view.parent as? ViewGroup)?.doOnPreDraw {
+                    startPostponedEnterTransition()
+                }
             }
 
             binding.backBtn.setOnClickListener {
@@ -72,7 +70,7 @@ class DetailFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(current: Int, images: List<ImageList.Image>?): DetailFragment {
+        fun newInstance(current: Int, images: List<Image>?): DetailFragment {
             val detailFragment = DetailFragment()
 
             // Passing image List and position of image clicked to detailed fragment

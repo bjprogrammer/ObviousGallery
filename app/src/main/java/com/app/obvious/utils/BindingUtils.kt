@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.core.app.ActivityCompat.startPostponedEnterTransition
 import androidx.databinding.BindingAdapter
 import com.app.obvious.R
 import com.bumptech.glide.Glide
@@ -23,6 +24,7 @@ fun loadImage(view: ImageView, url: String?, progressBar: ProgressBar) {
 
     Glide.with(view.context)
         .load(url)
+        .override(90)
         .thumbnail(requestBuilder)
         .apply(RequestOptions().error(R.mipmap.no_image))
         .listener(object : RequestListener<Drawable?> {

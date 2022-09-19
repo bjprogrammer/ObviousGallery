@@ -5,35 +5,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="image"  type="com.app.obvious.model.ImageList.Image"/>
+        <variable name="image"  type="com.app.obvious.model.Image"/>
     </data>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/card_layout_margin"
-        android:layout_marginStart="@dimen/card_layout_margin"
-        android:layout_marginEnd="@dimen/card_layout_margin"
         android:clickable="true"
         android:focusable="true"
-        app:cardUseCompatPadding="true"
+        android:layout_margin="3dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="@dimen/card_layout_corner_radius"
         card_view:cardElevation="@dimen/card_layout_elevation">
 
         <com.app.obvious.utils.SquareConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/purple_200">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/gridView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/purple_200"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:url="@{image.url}"
                 app:spinner="@{cardSpinner}"
                 android:contentDescription="@string/image_thumbnail" />

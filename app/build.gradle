@@ -64,4 +64,8 @@ dependencies {
     // For local unit tests
     testImplementation 'com.google.dagger:hilt-android-testing:2.43.2'
     kaptTest 'com.google.dagger:hilt-compiler:2.43.2'
+
+    // RxJava 3
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.9'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }
