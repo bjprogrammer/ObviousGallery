@@ -22,10 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:url="@{image.url}"
             app:spinner="@{progressImage}"
-            android:contentDescription="@string/displaying_full_size_image"
-            app:zoomage_zoomable="true"
-            app:zoomage_minScale="0.8"
-            app:zoomage_maxScale="5" />
+            android:contentDescription="@string/displaying_full_size_image" />
 
         <ImageButton
             android:id="@+id/details"
